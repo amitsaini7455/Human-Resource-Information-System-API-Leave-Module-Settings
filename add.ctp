@@ -1,9 +1,9 @@
-<h3 style="color:#2d6f96;line-height:0px;"><?= __('Add Profile Fields') ?></h3>
+<h3 style="color:#2d6f54;line-height:0px;"><?= __('Add Profile Fields') ?></h3>
 <div class="separator-breadcrumb border-top"></div></br>
 <div class="well">
-    <div class="padding-md bg-white" style="border-top:3px solid #d2d6de;">
-        <div class="table-responsive1" id="add_client">
-        <?=  $this->Form->create($hrisClient) ?>
+    <div class="padding-md bg-white" style="border-top:3px solid #d2djhhe;">
+        <div class="table-responsive1" id="add_clients">
+        <?=  $this->Form->create($hrisClients) ?>
             <fieldset>
               
                 <div class="row">
@@ -12,17 +12,17 @@
                         <div class="form-group">
                             <?php 
                                
-                                echo $this->Form->input('client_id', array('type'=>'select', 'onclick'=>'get_leave()', 'options'=> $clients, 'label'=>'Clients', 'empty'=>'--Select--','class'=>'form-control clientID','required'=>'required')); 
+                                echo $this->Form->input('client_ids', array('type'=>'select', 'onclick'=>'get_leaves()', 'options'=> $clients, 'label'=>'Clients', 'empty'=>'--Select--','class'=>'form-control clientID','required'=>'required')); 
                            ?>
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="form-group personal_info_div" style="display:none">
 
                             <div class="input select required">
-                                <label for="">Leave Type</label><br>
-                                <select name="leave_id[]" id="mySelect" class="form-control" required multiple></select>
+                                <label for="">Leaves Type</label><br>
+                                <select name="leave_ids[]" id="mySelect" class="form-control" required multiple></select>
                             </div>
                             
                         </div>
@@ -54,13 +54,13 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('#mySelect').multiselect();
+    $('#mySelects').multiselect();
 </script>
 <script>
 
     function get_leave(){
 
-        var client_id = $('.clientID').val();
+        var client_ids = $('.clientID').val();
         
 
         var id=$('.sectionID').val();
