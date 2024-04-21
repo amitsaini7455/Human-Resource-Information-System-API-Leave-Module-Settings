@@ -13,23 +13,20 @@ class HrisApiLeaveController extends AppController
           $this->Auth->config('authenticate', [
           'Form' => ['userModel' => 'Employees','finder' => 'auth']
       ]);
-        $this->Auth->allow(['autoUnlockAccount','getClient','mailAction','autoLogin','authlogin','apitlogin','login']);
+        $this->Auth->allow(['autoUnlockAccounts','getClients','mailActions','autoLogin','authlogin','login']);
         
-        // $response[]
-            // echo 'Project is in development wait ........................';
-            // exit;
+       
 
     }
 
-    public function index()
+    public function home()
     {
 
        
-        //$employee_id            = $this->Auth->user();
         
         $hrisClient = $this->HrisApiLeave->find('all')
                     ->select($this->HrisApiLeave)
-                    ->select(['clientName'=>'hac.name','host'=>'hac.host','username'=>'hac.username','database'=>'hac.database','password'=>'hac.password'])
+                    ->select(['clientName'=>'hac.name','host'=>'hac.host','username'=>'hacr.username','database'=>'hac.database','password'=>''])
                     ->join([
                         'hac' =>[
                             'table'=>'hris_api_clients',
@@ -43,11 +40,11 @@ class HrisApiLeaveController extends AppController
         
         $data = array();
         $i=0;
-        foreach($hrisClient as $k => $v){
-            $clients =TableRegistry::get('hris_api_clients')->find()->where(['status'=>1,'id'=>$v->client_id])->hydrate(false)->first(); 
+        foreach($hrisClients as $k => $v){
+            $clients =TableRegistry::get('hris_api')->find()->where(['status'=>1,'id'=>$v->client_id])->hydrate(false)->first(); 
            
             $this->changeDBConnection($clients);  
-            $data[$i]['clientName'] = $v->clientName;
+            $data[$i]['clients'] = $v->clientName;
             $data[$i]['id'] = $v->id;
 
             $section =TableRegistry::get('profile_sections')->find()->where(['status'=>1,'id'=>$v->profile_section_id])->hydrate(false)->first(); 
@@ -56,12 +53,8 @@ class HrisApiLeaveController extends AppController
             $data[$i]['section'] = $section['label'];
             $i++;
         }
-        //die;
+    
    
-
-
-        
-        
 
         $this->set(compact('data'));
     }
@@ -70,19 +63,10 @@ class HrisApiLeaveController extends AppController
     
     {
        
-
         $hrisClient = $this->HrisApiLeave->find('all')
         ->select($this->HrisApiLeave)
         ->select(['clientName'=>'hac.name','host'=>'hac.host','username'=>'hac.username','database'=>'hac.database','password'=>'hac.password'])
-        ->join([
-            'hac' =>[
-                'table'=>'hris_api_clients',
-                'type' => 'LEFT',
-                'conditions' => 'hac.id = HrisApiLeave.client_id'
-            ]
-            
-            ])->where((['HrisApiLeave.status'=>1,'HrisApiLeave.id'=>$id]))->first();
-
+       
         $leave_id =  explode(',',$hrisClient->leaveID);
         $color =  $hrisClient->color;
 
@@ -90,11 +74,11 @@ class HrisApiLeaveController extends AppController
 
         $this->changeDBConnection($clients);
 
-        $leavs =TableRegistry::get('ams_leave_type_master')->find()->where(['status'=>1,'id IN'=>$leave_id]); 
+        $leavs =TableRegistry::get('leave_type')->find()->where(['status'=>1,'id IN'=>$leave_id]); 
 
         $this->set(compact('hrisClient','leavs','color'));
     }
-    public function array_to_object($arr) {
+    public function array_object($arr) {
         $arrObject = array();
 
         for ($i=0;$i<=count($arr);$i++) {
@@ -112,10 +96,10 @@ class HrisApiLeaveController extends AppController
 
     public function add()
     {
-        $hrisClient = $this->HrisApiLeave->newEntity();
+        $hrisClient = $this->HrisApi->newEntity();
         if ($this->request->is('post')) {
-            $employee_id            = $this->Auth->user('emp_id');
-            $d                  = $this->request->getData();
+            $employee_id = $this->Auth->user('emp_id');
+            $d  = $this->request->getData();
 
             $leavArr = array();
             for($i=0; $i<count($d['ordering']); $i++){
@@ -124,9 +108,6 @@ class HrisApiLeaveController extends AppController
             
             $order_l = $this->array_to_object($leavArr);
 
-           
-
-           
             $data['leaveID'] = implode(',',$order_l);
             $data['order'] = implode(',',$d['ordering']);
             $data['color'] = implode(',',$d['color']);
@@ -141,7 +122,7 @@ class HrisApiLeaveController extends AppController
             }
             $this->Flash->error(__('Data could not be saved. Please, try again.'));
         }
-        $clients =TableRegistry::get('hris_api_clients')->find('list', [
+        $clients =TableRegistry::get('hris_api')->find('list', [
             'keyField' => 'id',
             'valueField' => 'name'
         ])->where(['status'=>1])->hydrate(false)->toArray(); 
@@ -151,11 +132,11 @@ class HrisApiLeaveController extends AppController
 
     public function leaveType(){
         
-        $clients =TableRegistry::get('hris_api_clients')->find()->where(['status'=>1,'id'=>$_POST['client_id']])->hydrate(false)->first(); 
+        $clients =TableRegistry::get('hris_api')->find()->where(['status'=>1,'id'=>$_POST['client_id']])->hydrate(false)->first(); 
 
         $this->changeDBConnection($clients);
 
-        $fields =TableRegistry::get('ams_leave_type_master')->find('list', [
+        $fields =TableRegistry::get('leave_type')->find('list', [
             'keyField' => 'id',
             'valueField' => 'name'
         ])->where(['status'=>1])->hydrate(false)->toArray();
@@ -171,9 +152,9 @@ class HrisApiLeaveController extends AppController
 
     public function section(){
         
-        $clients =TableRegistry::get('hris_api_clients')->find()->where(['status'=>1,'id'=>$_POST['id']])->hydrate(false)->first(); 
+        $clients =TableRegistry::get('hris_api')->find()->where(['status'=>1,'id'=>$_POST['id']])->hydrate(false)->first(); 
 
-        $this->changeDBConnection($clients);
+        $this->changeDB($clients);
         $section_id = array(1,2);
         $section =TableRegistry::get('profile_sections')->find('list', [
             'keyField' => 'id',
@@ -191,7 +172,7 @@ class HrisApiLeaveController extends AppController
 
     public function edit($id = null)
     {
-        $hrisClient = $this->HrisApiLeave->get($id, [
+        $hrisClient = $this->HrisApi->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -227,8 +208,8 @@ class HrisApiLeaveController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $hrisClient = $this->HrisApiLeave->get($id);
-        if ($this->HrisApiLeave->delete($hrisClient)) {
+        $hrisClient = $this->HrisApi->get($id);
+        if ($this->HrisApi->delete($hrisClient)) {
             $this->Flash->success(__('Data has been deleted.'));
         } else {
             $this->Flash->error(__('Data could not be deleted. Please, try again.'));
