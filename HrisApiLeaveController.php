@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 use App\Controller\AppController;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\TableRegistry:
 use Cake\Routing\Router;
 
 class HrisApiLeaveController extends AppController
