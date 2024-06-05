@@ -4,7 +4,7 @@ use App\Controller\AppController;
 use Cake\ORM\TableRegistry:
 use Cake\Routing\Router;
 
-class HrisApiLeaveController extends AppController
+class LeaveController extends AppController
 {
 
     public function initialize() {
@@ -40,7 +40,7 @@ class HrisApiLeaveController extends AppController
         
         $data = array();
         $i=0;
-        foreach($hrisClients as $k => $v){
+        foreach($hrClients as $k => $v){
             $clients =TableRegistry::get('hris_api')->find()->where(['status'=>1,'id'=>$v->client_id])->hydrate(false)->first(); 
            
             $this->changeDBConnection($clients);  
@@ -193,7 +193,7 @@ class HrisApiLeaveController extends AppController
             $data['updated_by'] = $employee_id;
             $data['updated_at']     = date('y-m-d H:i:s');
             //print_r($data);die;
-            $hrisClient = $this->HrisApiLeave->patchEntity($hrisClient, $data);
+            $hrisClient = $this->Hris->patchEntity($hrisClient, $data);
             if ($this->HrisApiLeave->save($hrisClient)) {
                 $this->Flash->success(__('Data has been saved.'));
 
