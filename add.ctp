@@ -3,7 +3,7 @@
 <div class="well">
     <div class="padding-md bg-white" style="border-top:3px solid #d2djhhe;">
         <div class="table-responsive1" id="add_clients">
-        <?=  $this->Form->create($hrisClients) ?>
+        <?=  $this->Form->create($hrClients) ?>
             <fieldset>
               
                 <div class="row">
@@ -78,20 +78,15 @@
                 $("#mySelect").html('');
             
                     $.each(result.fields, function(k, v) {
-                       // html += '<option value="'+k+'">'+v+'</option>';
                         $("#mySelect").append('<option value="' + k+ '">' + v + '</option>');
                     });
                 
-               // html += '</select><div>';
                
-               //$("#mySelect").append(html);
                     $("#mySelect").multiselect('rebuild');
                     $("#mySelect").multiselect('refresh');
 
                 
-             //  $("#mySelect").multiselect('rebuild');
 
-               // $('.personal_info_div').html(html);
                 $('.personal_info_div').show();
             
             
