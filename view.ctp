@@ -5,13 +5,7 @@
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Leaves'), ['action' => 'edit', $hrisClient->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Leaves'), ['action' => 'delete', $hrisClient->id], ['confirm' => __('Are you sure you want to delete # {0}?', $hrisClient->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Leaves'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Leaves'), ['action' => 'add']) ?> </li>
-    </ul>
+
 </nav>
 <div class="hrisClient view large-9 medium-8 columns content">
     <h3><?= h($hrisClient->name) ?></h3>
@@ -24,10 +18,7 @@
             <th scope="row"><?= __('Created By') ?></th>
             <td><?= h($hrisClient->created_at) ?></td>
         </tr>
-        <tr>
-            <th scope="row"><?= __('Modified By') ?></th>
-            <td><?= h($hrisClient->updated_at) ?></td>
-        </tr>
+     
         <tr>
             <th scope="row"><?= __('Fields') ?></th>
             <td><?php
