@@ -1,5 +1,5 @@
-<div class="row margin-bottom-md ams"></div>
-<div class="row margin-bottom-md ams">
+<div class="row margin-bottom-md"></div>
+<div class="row margin-bottom-md ">
 <div class="col-md-12">
   <h3 style="color:#2d6f96;line-height:0px;"><?= __('Leave Master') ?></h3>
 </div>
@@ -71,7 +71,7 @@
 </div>
 <script>
 $(document).ready(function() {
-    $('table').DataTable( {
+    $('tab').DataTable( {
         "processing": true,
         "serverSide": false,
           dom: 'Bfrtip',
@@ -103,8 +103,7 @@ $(document).ready(function() {
 
             format: {
             body: function ( data, row, column, node ) {
-            //
-            //check if type is input using jquery
+            
                                                                                 data = '<span>'+data+'</span>'
                     if($(data).find('option:selected').text() != ""){
 
@@ -133,15 +132,6 @@ $(document).ready(function() {
 
 <?php
 
-echo $this->Html->script('datatables/jquery.dataTables.min.js'); 
-echo $this->Html->script('datatables/buttons.colVis.min.js'); 
-echo $this->Html->css('buttons.dataTables.min.css');
-echo $this->Html->script('datatables/dataTables.buttons.min.js');  
-echo $this->Html->script('datatables/buttons.flash.min.js');  
-echo $this->Html->script('datatables/jszip.min.js');  
-echo $this->Html->script('datatables/pdfmake.min.js');  
-echo $this->Html->script('datatables/vfs_fonts.js');  
-echo $this->Html->script('datatables/buttons.html5.min.js');  
-echo $this->Html->script('datatables/buttons.print.min.js'); 
+ 
 
 ?>
